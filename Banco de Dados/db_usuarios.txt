@@ -1,0 +1,7 @@
+CREATE DATABASE cj_usuarios;
+
+CREATE TABLE usuarios (
+  id_usuario int(11) AUTO_INCREMENT primary key,
+  usuario varchar(40),
+  senha varchar(32)
+) 

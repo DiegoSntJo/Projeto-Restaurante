@@ -1,4 +1,10 @@
 <?php
+session_start();
+if(!isset($_SESSION['id_usuario'])){
+    header("location: index.php");
+    exit;
+}
+
      require_once 'Class/usuarios.php';
      $u = new Usuario;
 ?>
@@ -30,7 +36,7 @@
 
         <!-- AVISO -->
         <div>
-            <p>Já tem cadastro ? <a href="login.php">Clique aqui !</a></p>
+            <a href="admin.php">Voltar</a>
         </div>
 
         <?php

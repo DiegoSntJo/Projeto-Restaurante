@@ -1,0 +1,9 @@
+CREATE DATABASE cj_cardapio;
+
+CREATE TABLE cardapio (
+  codigo int(11) AUTO_INCREMENT primary key,
+  prato varchar(40),
+  nome varchar (100),
+  path varchar (100),
+  descricao varchar(300)
+)

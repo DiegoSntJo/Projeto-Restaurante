@@ -11,6 +11,7 @@ if(isset($_FILES['arquivo'])){
     $arquivo = $_FILES['arquivo'];
     $prato = $_POST['prato'];
     $descricao = $_POST['descricao'];
+    $preco = $_POST['preco'];
 
     echo "Arquivo enviado !";
 
@@ -25,7 +26,7 @@ if(isset($_FILES['arquivo'])){
     $path = $pasta.$novoNomeDoArquivo.".".$extensao;    
     $deu_certo = move_uploaded_file($arquivo["tmp_name"], $path);
     if($deu_certo){
-        $mysqli->query("INSERT INTO cardapio (nome,path,prato,descricao) VALUES ('$nomeDoArquivo','$path','$prato','$descricao')") or die ($mysql->error);
+        $mysqli->query("INSERT INTO cardapio (nome,path,prato,descricao,preco) VALUES ('$nomeDoArquivo','$path','$prato','$descricao','$preco')") or die ($mysql->error);
         echo "<p>Arquivo enviado com sucesso para acessa-lo</p>";
     }
     else
@@ -48,11 +49,18 @@ $sql_query = $mysqli->query("SELECT * FROM cardapio") or die ($mysqli->error);
     function sair(){
         res = confirm("Tem certeza que deseja sair ?");
         if(res){
-            window.location = "sair.php";
+            window.location = "Funcoes/sair.php";
         }
     }
     function cadastrar(){
             window.location = "cadastro.php";
+    }
+
+    function excluir(codigo){
+         res = confirm("Tem certeza que deseja excluir este compromisso ?");
+        if(res){
+            window.location = "Funcoes/excluir.php?codigo=" + codigo;
+        }
     }
 </script>
 
@@ -68,11 +76,43 @@ $sql_query = $mysqli->query("SELECT * FROM cardapio") or die ($mysqli->error);
             <form method="POST" enctype="multipart/form-data">
                 <input type="text" name="prato" placeholder="Nome do prato"><br>
                 <input type="text" name="descricao" placeholder="Descrição do prato"><br>
+                <input type="number" name="preco" placeholder="Preço"><br>
                 <input type="file" name="arquivo"><br>
                 <input type="submit">
             </form>
         </div>
 
+         <!-- CARDÁPIO -->
+         <div>
+            <h3>Cardápio !</h3>
+            <table border="1" cellpadding="10">
+                <thead>
+                    <th>Preview</th>
+                    <th>Prato</th>
+                    <th>Descrição</th>
+                    <th>Preço</th>
+                    <th>Editar</th>
+                    <th>Excluir</th>
+                </thead>
+
+                <tbody>
+                <?php
+                while($arquivo = $sql_query->fetch_assoc()){
+                ?>
+                    <tr>
+                        <td><img height="50" src="<?php echo $arquivo['path']; ?>"></td>
+                        <td><?php echo $arquivo['prato']; ?></td>
+                        <td><?php echo $arquivo['descricao']; ?></td>
+                        <td><?php echo $arquivo['preco']; ?></td>
+                        <td><input type="button" value="Editar" onclick=""></td>
+                        <td><input type="button" value="Excluir" onclick="excluir(<?php echo $arquivo['codigo']; ?>)"></td>
+                    </tr>
+                <?php
+                }
+                ?>
+                </tbody>
+            </table>
+        </div>
     </section>
 </body>
 </html>

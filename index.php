@@ -10,7 +10,7 @@ $sql_query = $mysqli->query("SELECT * FROM cardapio") or die ($mysqli->error);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administração - Coco Jambo Restaurante</title>
+    <title>Coco Jambo Restaurante</title>
 </head>
 
 <body>
@@ -26,6 +26,7 @@ $sql_query = $mysqli->query("SELECT * FROM cardapio") or die ($mysqli->error);
                     <th>Preview</th>
                     <th>Prato</th>
                     <th>Descrição</th>
+                    <th>Preço</th>
                     <th></th>
                 </thead>
 
@@ -37,6 +38,7 @@ $sql_query = $mysqli->query("SELECT * FROM cardapio") or die ($mysqli->error);
                         <td><img height="50" src="<?php echo $arquivo['path']; ?>"></td>
                         <td><?php echo $arquivo['prato']; ?></td>
                         <td><?php echo $arquivo['descricao']; ?></td>
+                        <td><?php echo $arquivo['preco']; ?></td>
                         <td><input type="button" value="Pedir" onclick="pedir()"></td>
                     </tr>
                 <?php

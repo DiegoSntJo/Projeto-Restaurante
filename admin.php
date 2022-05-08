@@ -7,7 +7,29 @@ session_start();
 
 include("Class/conexao.php");
 
+$sql_query = $mysqli->query("SELECT * FROM cardapio") or die ($mysqli->error);
+
+if (!empty($_GET["id_usuario"])){
+    $res = mysqli_query($db_conec, "SELECT * FROM cardapio WHERE codigo= " . $_GET["id_usuario"]);
+    $linha = mysqli_fetch_row($res);
+    $codigo = $linha[0];
+    $prato = $linha[1];
+    $preco = $linha[2];
+    $nome = $linha[3];
+    $path = $linha[4];
+    $descricao = $linha[5];
+}else{
+    $codigo = "";
+    $prato = "";
+    $preco = "";
+    $nome = "";
+    $path = "";
+    $descricao = "";
+}
+
 if(isset($_FILES['arquivo'])){
+
+    
     $arquivo = $_FILES['arquivo'];
     $prato = $_POST['prato'];
     $descricao = $_POST['descricao'];
@@ -25,15 +47,15 @@ if(isset($_FILES['arquivo'])){
 
     $path = $pasta.$novoNomeDoArquivo.".".$extensao;    
     $deu_certo = move_uploaded_file($arquivo["tmp_name"], $path);
+
     if($deu_certo){
         $mysqli->query("INSERT INTO cardapio (nome,path,prato,descricao,preco) VALUES ('$nomeDoArquivo','$path','$prato','$descricao','$preco')") or die ($mysql->error);
-        echo "<p>Arquivo enviado com sucesso para acessa-lo</p>";
-    }
-    else
+        echo "<p>Prato enviado com sucesso !</p>";
+    }else{
         echo "Falha ao enviar arquivo";
+    }
 }
 
-$sql_query = $mysqli->query("SELECT * FROM cardapio") or die ($mysqli->error);
 ?>
 
 <!DOCTYPE html>
@@ -62,6 +84,10 @@ $sql_query = $mysqli->query("SELECT * FROM cardapio") or die ($mysqli->error);
             window.location = "Funcoes/excluir.php?codigo=" + codigo;
         }
     }
+
+    function alterar(codigo){
+        window.location = "admin.php?id_usuario=" + codigo;
+    }
 </script>
 
 <body>
@@ -74,17 +100,29 @@ $sql_query = $mysqli->query("SELECT * FROM cardapio") or die ($mysqli->error);
         <div>
             <h2>Adicionar prato ao cardápio</h2>
             <form method="POST" enctype="multipart/form-data">
-                <input type="text" name="prato" placeholder="Nome do prato"><br>
-                <input type="text" name="descricao" placeholder="Descrição do prato"><br>
-                <input type="number" name="preco" placeholder="Preço"><br>
+                <input type="text" name="prato" placeholder="Nome do prato" maxlength="30" autocomplete="off"><br>
+                <input type="text" name="descricao" placeholder="Descrição do prato" autocomplete="off"><br>
+                <input type="number" name="preco" placeholder="Preço" maxlength="10" autocomplete="off"><br>
                 <input type="file" name="arquivo"><br>
+                <input type="submit">
+            </form>
+        </div>
+
+        <!-- EDITAR PRATO -->
+        <div>
+            <h2>Editar prato do cardápio</h2>
+            <form method="GET" action="Funcoes/inserir.php">
+                <input type="hidden" name="id_usuario" value="<?=$codigo ?>">
+                <input type="text" name="prato" placeholder="Nome do prato" maxlength="30" autocomplete="off" value="<?=$prato?>"><br>
+                <input type="text" name="descricao" placeholder="Descrição do prato" autocomplete="off" value="<?=$descricao?>"><br>
+                <input type="number" name="preco" placeholder="Preço" maxlength="10" autocomplete="off" value="<?=$preco?>"><br>
                 <input type="submit">
             </form>
         </div>
 
          <!-- CARDÁPIO -->
          <div>
-            <h3>Cardápio !</h3>
+            <h3>Cardápio</h3>
             <table border="1" cellpadding="10">
                 <thead>
                     <th>Preview</th>
@@ -104,7 +142,7 @@ $sql_query = $mysqli->query("SELECT * FROM cardapio") or die ($mysqli->error);
                         <td><?php echo $arquivo['prato']; ?></td>
                         <td><?php echo $arquivo['descricao']; ?></td>
                         <td><?php echo $arquivo['preco']; ?></td>
-                        <td><input type="button" value="Editar" onclick=""></td>
+                        <td><input type="button" value="Editar" onclick="alterar(<?php echo $arquivo['codigo']; ?>)"></td>
                         <td><input type="button" value="Excluir" onclick="excluir(<?php echo $arquivo['codigo']; ?>)"></td>
                     </tr>
                 <?php

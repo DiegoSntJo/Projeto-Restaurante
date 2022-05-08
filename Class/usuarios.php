@@ -32,7 +32,7 @@ Class Usuario
 			//caso nao, Cadastrar
 			$sql = $pdo->prepare("INSERT INTO usuarios (usuario, senha) VALUES (:u, :s)");
 			$sql->bindValue(":u",$usuario);
-			$sql->bindValue(":s",$senha);
+			$sql->bindValue(":s",md5($senha));
 			$sql->execute();
 			return true; //tudo ok
 		}
@@ -45,7 +45,7 @@ Class Usuario
 		//verificar se o usuario e senha estao cadastrados, se sim
 		$sql = $pdo->prepare("SELECT id_usuario FROM usuarios WHERE usuario = :u AND senha = :s");
 		$sql->bindValue(":u",$usuario);
-		$sql->bindValue(":s",$senha);
+		$sql->bindValue(":s",md5($senha));
 		$sql->execute();
 		if($sql->rowCount() > 0)
 		{

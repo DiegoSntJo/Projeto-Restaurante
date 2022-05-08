@@ -27,7 +27,6 @@ $sql_query = $mysqli->query("SELECT * FROM cardapio") or die ($mysqli->error);
                     <th>Prato</th>
                     <th>Descrição</th>
                     <th>Preço</th>
-                    <th></th>
                 </thead>
 
                 <tbody>

@@ -28,7 +28,7 @@ if(!isset($_SESSION['id_usuario'])){
             <h2>Cadastrar</h2>
             <form method="POST">
                 <input type="text" name="usuario" placeholder="Usuário" maxlength="40" autocomplete="off" required><br>
-                <input type="password" name="senha" placeholder="Senha" maxlength="15"><br>
+                <input type="password" name="senha" placeholder="Senha" maxlength="15" required><br>
                 <input type="password" name="confSenha" placeholder="Confirmar senha" maxlength="15"><br>
                 <input type="submit" value="CADASTRAR">
             </form>

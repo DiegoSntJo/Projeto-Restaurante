@@ -4,7 +4,7 @@
 
     $codigo = $_GET["codigo"];
 
-    $query = "DELETE FROM cardapio WHERE codigo =". $codigo;
+    $query = "DELETE FROM bebidas WHERE codigo =". $codigo;
     $res = mysqli_query($db_conec, $query);
 
     if(!$res){

@@ -2,11 +2,11 @@
     session_start();
     include("../Class/conexao.php");
 
-    $prato = $_GET["prato"];
+    $bebida = $_GET["bebida"];
     $descricao = $_GET["descricao"];
     $preco = $_GET["preco"];
 
-    $codigo = $_GET["id_usuario"];
+    $codigo = $_GET["codigo_bebida"];
 
 ?>
 
@@ -19,15 +19,15 @@
 
 <?php
 
-    $sql= "SELECT * FROM cardapio WHERE codigo ='$codigo'";
+    $sql= "SELECT * FROM bebidas WHERE codigo ='$codigo'";
     $resultado= mysqli_query($db_conec,$sql);
 
-    if(!empty($_GET["id_usuario"])){
-        $query="UPDATE cardapio SET prato='".$prato."',descricao='".$descricao."',preco='".$preco."' WHERE codigo=".$codigo;
+    if(!empty($_GET["codigo_bebida"])){
+        $query="UPDATE bebidas SET bebida='".$bebida."',descricao='".$descricao."',preco='".$preco."' WHERE codigo=".$codigo;
         $msg = "Falha ao alterar os dados.";
 ?>
     <script>
-        msg= "Prato editado com sucesso !";
+        msg= "Bebida editada com sucesso !";
         onload=alerta();
     </script>
 <?php

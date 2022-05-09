@@ -1,9 +1,9 @@
 <?php
 session_start();
-    if(!isset($_SESSION['id_usuario'])){
-        header("location: index.php");
-        exit;
-    }
+if(!isset($_SESSION['id_usuario'])){
+    header("location: index.php");
+    exit;
+}
 
 include("Class/conexao.php");
 
@@ -11,8 +11,8 @@ $sql_query = $mysqli->query("SELECT * FROM cardapio") or die ($mysqli->error);
 $sql_query_bebidas = $mysqli->query("SELECT * FROM bebidas") or die ($mysqli->error);
 $sql_query_combos = $mysqli->query("SELECT * FROM combos") or die ($mysqli->error);
 
-if (!empty($_GET["id_usuario"])){
-    $res = mysqli_query($db_conec, "SELECT * FROM cardapio WHERE codigo= " . $_GET["id_usuario"]);
+if (!empty($_GET["codigo"])){
+    $res = mysqli_query($db_conec, "SELECT * FROM cardapio WHERE codigo= " . $_GET["codigo"]);
     $linha = mysqli_fetch_row($res);
     $codigo = $linha[0];
     $prato = $linha[1];
@@ -29,8 +29,43 @@ if (!empty($_GET["id_usuario"])){
     $descricao = "";
 }
 
-if(isset($_FILES['arquivo'])){
+if (!empty($_GET["codigo_bebida"])){
+    $res = mysqli_query($db_conec, "SELECT * FROM bebidas WHERE codigo= " . $_GET["codigo_bebida"]);
+    $linha = mysqli_fetch_row($res);
+    $codigoBebida = $linha[0];
+    $bebida = $linha[1];
+    $precoBebida = $linha[2];
+    $nomeBebida = $linha[3];
+    $pathBebida = $linha[4];
+    $descricaoBebida = $linha[5];
+}else{
+    $codigoBebida = "";
+    $bebida = "";
+    $precoBebida = "";
+    $nomeBebida = "";
+    $pathBebida = "";
+    $descricaoBebida = "";
+}
 
+if (!empty($_GET["codigo_combo"])){
+    $res = mysqli_query($db_conec, "SELECT * FROM combos WHERE codigo= " . $_GET["codigo_combo"]);
+    $linha = mysqli_fetch_row($res);
+    $codigoCombo = $linha[0];
+    $combo = $linha[1];
+    $precoCombo = $linha[2];
+    $nomeCombo = $linha[3];
+    $pathCombo = $linha[4];
+    $descricaoCombo = $linha[5];
+}else{
+    $codigoCombo = "";
+    $combo = "";
+    $precoCombo = "";
+    $nomeCombo = "";
+    $pathCombo = "";
+    $descricaoCombo = "";
+}
+
+if(isset($_FILES['arquivo'])){
     
     $arquivo = $_FILES['arquivo'];
     $prato = $_POST['prato'];
@@ -59,7 +94,6 @@ if(isset($_FILES['arquivo'])){
 }
 
 if(isset($_FILES['arquivoBebida'])){
-
     
     $arquivoBebida = $_FILES['arquivoBebida'];
     $bebida = $_POST['bebida'];
@@ -88,7 +122,6 @@ if(isset($_FILES['arquivoBebida'])){
 }
 
 if(isset($_FILES['arquivoCombos'])){
-
     
     $arquivoCombos = $_FILES['arquivoCombos'];
     $combo = $_POST['combo'];
@@ -128,33 +161,59 @@ if(isset($_FILES['arquivoCombos'])){
 </head>
 
 <script>
+
     function sair(){
         res = confirm("Tem certeza que deseja sair ?");
         if(res){
             window.location = "Funcoes/sair.php";
         }
     }
+
     function cadastrar(){
             window.location = "cadastro.php";
     }
 
     function excluir(codigo){
-         res = confirm("Tem certeza que deseja excluir este compromisso ?");
+         res = confirm("Tem certeza que deseja excluir este prato ?");
         if(res){
             window.location = "Funcoes/excluir.php?codigo=" + codigo;
         }
     }
 
+    function excluirBebida(codigo){
+         res = confirm("Tem certeza que deseja excluir esta bebida ?");
+        if(res){
+            window.location = "Funcoes/excluirBebida.php?codigo=" + codigo;
+        }
+    }
+
+    function excluirCombo(codigo){
+         res = confirm("Tem certeza que deseja excluir este combo ?");
+        if(res){
+            window.location = "Funcoes/excluirCombo.php?codigo=" + codigo;
+        }
+    }
+
     function alterar(codigo){
-        window.location = "admin.php?id_usuario=" + codigo;
+        window.location = "admin.php?codigo=" + codigo;
+    }
+
+    function alterarBebida(codigo){
+        window.location = "admin.php?codigo_bebida=" + codigo;
+    }
+
+    function alterarCombo(codigo){
+        window.location = "admin.php?codigo_combo=" + codigo;
     }
 </script>
 
 <body>
+
     <header>
         <input type="button" value="Cadastrar usuário" onclick="cadastrar()">
         <input type="button" value="Sair" onclick="sair()"><br><br>
     </header>
+
     <section>
         <!-- ADICIONAR PRATO AO CARDÁPIO -->
         <div>
@@ -171,8 +230,8 @@ if(isset($_FILES['arquivoCombos'])){
         <!-- EDITAR PRATO -->
         <div>
             <h2>Editar prato do cardápio</h2>
-            <form method="GET" action="Funcoes/inserir.php">
-                <input type="hidden" name="id_usuario" value="<?=$codigo ?>">
+            <form method="GET" action="Funcoes/alterar.php">
+                <input type="hidden" name="codigo" value="<?=$codigo ?>">
                 <input type="text" name="prato" placeholder="Nome do prato" maxlength="30" autocomplete="off" value="<?=$prato?>"><br>
                 <input type="text" name="descricao" placeholder="Descrição do prato" autocomplete="off" value="<?=$descricao?>"><br>
                 <input type="number" name="preco" placeholder="Preço" maxlength="10" autocomplete="off" value="<?=$preco?>"><br>
@@ -192,6 +251,18 @@ if(isset($_FILES['arquivoCombos'])){
             </form>
         </div>
 
+        <!-- EDITAR BEBIDA -->
+        <div>
+            <h2>Editar bebida do cardápio</h2>
+            <form method="GET" action="Funcoes/alterarBebida.php">
+                <input type="hidden" name="codigo_bebida" value="<?=$codigoBebida?>">
+                <input type="text" name="bebida" placeholder="Nome da bebida" maxlength="30" autocomplete="off" value="<?=$bebida?>"><br>
+                <input type="text" name="descricao" placeholder="Descrição da bebida" autocomplete="off" value="<?=$descricaoBebida?>"><br>
+                <input type="number" name="preco" placeholder="Preço" maxlength="10" autocomplete="off" value="<?=$precoBebida?>"><br>
+                <input type="submit">
+            </form>
+        </div>
+
         <!-- ADICIONAR COMBO AO CARDÁPIO -->
         <div>
             <h2>Adicionar combo ao cardápio</h2>
@@ -204,10 +275,21 @@ if(isset($_FILES['arquivoCombos'])){
             </form>
         </div>
 
-         <!-- CARDÁPIO -->
-         <div>
-            <h2>Cardápio</h2><br>
-            
+        <!-- EDITAR COMBO -->
+        <div>
+            <h2>Editar combo do cardápio</h2>
+            <form method="GET" action="Funcoes/alterarCombo.php">
+                <input type="hidden" name="codigo_combo" value="<?=$codigoCombo?>">
+                <input type="text" name="combo" placeholder="Nome do combo" maxlength="30" autocomplete="off" value="<?=$combo?>"><br>
+                <input type="text" name="descricao" placeholder="Descrição do combo" autocomplete="off" value="<?=$descricaoCombo?>"><br>
+                <input type="number" name="preco" placeholder="Preço" maxlength="10" autocomplete="off" value="<?=$precoCombo?>"><br>
+                <input type="submit">
+            </form>
+        </div>
+
+        <!-- CARDÁPIO -->
+        <h2>Cardápio</h2>
+        <div>
             <!-- PRATOS -->
             <h3>Pratos</h3>
             <table border="1" cellpadding="10">
@@ -259,8 +341,8 @@ if(isset($_FILES['arquivoCombos'])){
                         <td><?php echo $arquivoBebida['bebida']; ?></td>
                         <td><?php echo $arquivoBebida['descricao']; ?></td>
                         <td><?php echo $arquivoBebida['preco']; ?></td>
-                        <td><input type="button" value="Editar" onclick="alterar(<?php echo $arquivoBebida['codigo']; ?>)"></td>
-                        <td><input type="button" value="Excluir" onclick="excluir(<?php echo $arquivoBebida['codigo']; ?>)"></td>
+                        <td><input type="button" value="Editar" onclick="alterarBebida(<?php echo $arquivoBebida['codigo']; ?>)"></td>
+                        <td><input type="button" value="Excluir" onclick="excluirBebida(<?php echo $arquivoBebida['codigo']; ?>)"></td>
                     </tr>
                 <?php
                 }
@@ -289,8 +371,8 @@ if(isset($_FILES['arquivoCombos'])){
                         <td><?php echo $arquivoCombos['combo']; ?></td>
                         <td><?php echo $arquivoCombos['descricao']; ?></td>
                         <td><?php echo $arquivoCombos['preco']; ?></td>
-                        <td><input type="button" value="Editar" onclick="alterar(<?php echo $arquivoCombos['codigo']; ?>)"></td>
-                        <td><input type="button" value="Excluir" onclick="excluir(<?php echo $arquivoCombos['codigo']; ?>)"></td>
+                        <td><input type="button" value="Editar" onclick="alterarCombo(<?php echo $arquivoCombos['codigo']; ?>)"></td>
+                        <td><input type="button" value="Excluir" onclick="excluirCombo(<?php echo $arquivoCombos['codigo']; ?>)"></td>
                     </tr>
                 <?php
                 }
@@ -298,6 +380,7 @@ if(isset($_FILES['arquivoCombos'])){
                 </tbody>
             </table>
         </div>
+        
     </section>
 </body>
 </html>

@@ -2,6 +2,8 @@
 include("Class/conexao.php");
 
 $sql_query = $mysqli->query("SELECT * FROM cardapio") or die ($mysqli->error);
+$sql_query_bebidas = $mysqli->query("SELECT * FROM bebidas") or die ($mysqli->error);
+$sql_query_combos = $mysqli->query("SELECT * FROM combos") or die ($mysqli->error);
 ?>
 
 <!DOCTYPE html>
@@ -19,8 +21,11 @@ $sql_query = $mysqli->query("SELECT * FROM cardapio") or die ($mysqli->error);
     </header>
     <section>
         <!-- CARDÁPIO -->
+        <h2>Confira nosso cardápio !</h2>
+
+        <!-- PRATOS -->
+        <h3> Pratos </h3>
         <div>
-            <h3>Confira nosso cardápio !</h3>
             <table border="1" cellpadding="10">
                 <thead>
                     <th>Preview</th>
@@ -38,6 +43,64 @@ $sql_query = $mysqli->query("SELECT * FROM cardapio") or die ($mysqli->error);
                         <td><?php echo $arquivo['prato']; ?></td>
                         <td><?php echo $arquivo['descricao']; ?></td>
                         <td><?php echo $arquivo['preco']; ?></td>
+                        <td><input type="button" value="Pedir" onclick="pedir()"></td>
+                    </tr>
+                <?php
+                }
+                ?>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- BEBIDAS -->
+        <h3> Bebidas </h3>
+        <div>
+            <table border="1" cellpadding="10">
+                <thead>
+                    <th>Preview</th>
+                    <th>Bebidas</th>
+                    <th>Descrição</th>
+                    <th>Preço</th>
+                </thead>
+
+                <tbody>
+                <?php
+                while($arquivoBebida = $sql_query_bebidas->fetch_assoc()){
+                ?>
+                    <tr>
+                        <td><img height="50" src="<?php echo $arquivoBebida['path']; ?>"></td>
+                        <td><?php echo $arquivoBebida['bebida']; ?></td>
+                        <td><?php echo $arquivoBebida['descricao']; ?></td>
+                        <td><?php echo $arquivoBebida['preco']; ?></td>
+                        <td><input type="button" value="Pedir" onclick="pedir()"></td>
+                    </tr>
+                <?php
+                }
+                ?>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- COMBOS -->
+        <h3> Combos </h3>
+        <div>
+            <table border="1" cellpadding="10">
+                <thead>
+                    <th>Preview</th>
+                    <th>Combos</th>
+                    <th>Descrição</th>
+                    <th>Preço</th>
+                </thead>
+
+                <tbody>
+                <?php
+                while($arquivoCombos = $sql_query_combos->fetch_assoc()){
+                ?>
+                    <tr>
+                        <td><img height="50" src="<?php echo $arquivoCombos['path']; ?>"></td>
+                        <td><?php echo $arquivoCombos['combo']; ?></td>
+                        <td><?php echo $arquivoCombos['descricao']; ?></td>
+                        <td><?php echo $arquivoCombos['preco']; ?></td>
                         <td><input type="button" value="Pedir" onclick="pedir()"></td>
                     </tr>
                 <?php

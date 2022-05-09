@@ -8,6 +8,8 @@ session_start();
 include("Class/conexao.php");
 
 $sql_query = $mysqli->query("SELECT * FROM cardapio") or die ($mysqli->error);
+$sql_query_bebidas = $mysqli->query("SELECT * FROM bebidas") or die ($mysqli->error);
+$sql_query_combos = $mysqli->query("SELECT * FROM combos") or die ($mysqli->error);
 
 if (!empty($_GET["id_usuario"])){
     $res = mysqli_query($db_conec, "SELECT * FROM cardapio WHERE codigo= " . $_GET["id_usuario"]);
@@ -56,6 +58,64 @@ if(isset($_FILES['arquivo'])){
     }
 }
 
+if(isset($_FILES['arquivoBebida'])){
+
+    
+    $arquivoBebida = $_FILES['arquivoBebida'];
+    $bebida = $_POST['bebida'];
+    $descricaoBebida = $_POST['descricaoBebida'];
+    $precoBebida = $_POST['precoBebida'];
+
+    echo "Arquivo enviado !";
+
+    $pasta = "Midia/";
+    $nomeDoArquivo = $arquivoBebida['name'];
+    $novoNomeDoArquivo = uniqid();
+    $extensao = strtolower(pathinfo($nomeDoArquivo,PATHINFO_EXTENSION));
+
+    if($extensao != 'jpg' && $extensao != 'png')
+        die("Tipo de arquivo não aceito");
+
+    $path = $pasta.$novoNomeDoArquivo.".".$extensao;    
+    $deu_certo = move_uploaded_file($arquivoBebida["tmp_name"], $path);
+
+    if($deu_certo){
+        $mysqli->query("INSERT INTO bebidas (nome,path,bebida,descricao,preco) VALUES ('$nomeDoArquivo','$path','$bebida','$descricaoBebida','$precoBebida')") or die ($mysql->error);
+        echo "<p>Bebida enviada com sucesso !</p>";
+    }else{
+        echo "Falha ao enviar arquivo";
+    }
+}
+
+if(isset($_FILES['arquivoCombos'])){
+
+    
+    $arquivoCombos = $_FILES['arquivoCombos'];
+    $combo = $_POST['combo'];
+    $descricaoCombo = $_POST['descricaoCombo'];
+    $precoCombo = $_POST['precoCombo'];
+
+    echo "Arquivo enviado !";
+
+    $pasta = "Midia/";
+    $nomeDoArquivo = $arquivoCombos['name'];
+    $novoNomeDoArquivo = uniqid();
+    $extensao = strtolower(pathinfo($nomeDoArquivo,PATHINFO_EXTENSION));
+
+    if($extensao != 'jpg' && $extensao != 'png')
+        die("Tipo de arquivo não aceito");
+
+    $path = $pasta.$novoNomeDoArquivo.".".$extensao;    
+    $deu_certo = move_uploaded_file($arquivoCombos["tmp_name"], $path);
+
+    if($deu_certo){
+        $mysqli->query("INSERT INTO combos (nome,path,combo,descricao,preco) VALUES ('$nomeDoArquivo','$path','$combo','$descricaoCombo','$precoCombo')") or die ($mysql->error);
+        echo "<p>Combo enviada com sucesso !</p>";
+    }else{
+        echo "Falha ao enviar arquivo";
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -96,7 +156,7 @@ if(isset($_FILES['arquivo'])){
         <input type="button" value="Sair" onclick="sair()"><br><br>
     </header>
     <section>
-        <!-- ADICIONAR AO CARDÁPIO -->
+        <!-- ADICIONAR PRATO AO CARDÁPIO -->
         <div>
             <h2>Adicionar prato ao cardápio</h2>
             <form method="POST" enctype="multipart/form-data">
@@ -120,9 +180,36 @@ if(isset($_FILES['arquivo'])){
             </form>
         </div>
 
+        <!-- ADICIONAR BEBIDA AO CARDÁPIO -->
+        <div>
+            <h2>Adicionar bebida ao cardápio</h2>
+            <form method="POST" enctype="multipart/form-data">
+                <input type="text" name="bebida" placeholder="Nome da bebida" maxlength="30" autocomplete="off"><br>
+                <input type="text" name="descricaoBebida" placeholder="Descrição da bebida" autocomplete="off"><br>
+                <input type="number" name="precoBebida" placeholder="Preço" maxlength="10" autocomplete="off"><br>
+                <input type="file" name="arquivoBebida"><br>
+                <input type="submit">
+            </form>
+        </div>
+
+        <!-- ADICIONAR COMBO AO CARDÁPIO -->
+        <div>
+            <h2>Adicionar combo ao cardápio</h2>
+            <form method="POST" enctype="multipart/form-data">
+                <input type="text" name="combo" placeholder="Nome da combo" maxlength="30" autocomplete="off"><br>
+                <input type="text" name="descricaoCombo" placeholder="Descrição da combo" autocomplete="off"><br>
+                <input type="number" name="precoCombo" placeholder="Preço" maxlength="10" autocomplete="off"><br>
+                <input type="file" name="arquivoCombos"><br>
+                <input type="submit">
+            </form>
+        </div>
+
          <!-- CARDÁPIO -->
          <div>
-            <h3>Cardápio</h3>
+            <h2>Cardápio</h2><br>
+            
+            <!-- PRATOS -->
+            <h3>Pratos</h3>
             <table border="1" cellpadding="10">
                 <thead>
                     <th>Preview</th>
@@ -144,6 +231,66 @@ if(isset($_FILES['arquivo'])){
                         <td><?php echo $arquivo['preco']; ?></td>
                         <td><input type="button" value="Editar" onclick="alterar(<?php echo $arquivo['codigo']; ?>)"></td>
                         <td><input type="button" value="Excluir" onclick="excluir(<?php echo $arquivo['codigo']; ?>)"></td>
+                    </tr>
+                <?php
+                }
+                ?>
+                </tbody>
+            </table>
+
+            <!-- BEBIDAS -->
+            <h3>Bebidas</h3>
+            <table border="1" cellpadding="10">
+                <thead>
+                    <th>Preview</th>
+                    <th>Bebida</th>
+                    <th>Descrição</th>
+                    <th>Preço</th>
+                    <th>Editar</th>
+                    <th>Excluir</th>
+                </thead>
+
+                <tbody>
+                <?php
+                while($arquivoBebida = $sql_query_bebidas->fetch_assoc()){
+                ?>
+                    <tr>
+                        <td><img height="50" src="<?php echo $arquivoBebida['path']; ?>"></td>
+                        <td><?php echo $arquivoBebida['bebida']; ?></td>
+                        <td><?php echo $arquivoBebida['descricao']; ?></td>
+                        <td><?php echo $arquivoBebida['preco']; ?></td>
+                        <td><input type="button" value="Editar" onclick="alterar(<?php echo $arquivoBebida['codigo']; ?>)"></td>
+                        <td><input type="button" value="Excluir" onclick="excluir(<?php echo $arquivoBebida['codigo']; ?>)"></td>
+                    </tr>
+                <?php
+                }
+                ?>
+                </tbody>
+            </table>
+
+            <!-- COMBOS -->
+            <h3>Combos</h3>
+            <table border="1" cellpadding="10">
+                <thead>
+                    <th>Preview</th>
+                    <th>Combo</th>
+                    <th>Descrição</th>
+                    <th>Preço</th>
+                    <th>Editar</th>
+                    <th>Excluir</th>
+                </thead>
+
+                <tbody>
+                <?php
+                while($arquivoCombos = $sql_query_combos->fetch_assoc()){
+                ?>
+                    <tr>
+                        <td><img height="50" src="<?php echo $arquivoCombos['path']; ?>"></td>
+                        <td><?php echo $arquivoCombos['combo']; ?></td>
+                        <td><?php echo $arquivoCombos['descricao']; ?></td>
+                        <td><?php echo $arquivoCombos['preco']; ?></td>
+                        <td><input type="button" value="Editar" onclick="alterar(<?php echo $arquivoCombos['codigo']; ?>)"></td>
+                        <td><input type="button" value="Excluir" onclick="excluir(<?php echo $arquivoCombos['codigo']; ?>)"></td>
                     </tr>
                 <?php
                 }

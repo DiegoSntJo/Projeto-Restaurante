@@ -8,3 +8,21 @@ CREATE TABLE cardapio (
   path varchar (100),
   descricao varchar(300)
 )
+
+CREATE TABLE bebidas (
+  codigo int(11) AUTO_INCREMENT primary key,
+  bebida varchar(40),
+  preco float (10),
+  nome varchar (100),
+  path varchar (100),
+  descricao varchar(300)
+)
+
+CREATE TABLE combos (
+  codigo int(11) AUTO_INCREMENT primary key,
+  combo varchar(40),
+  preco float (10),
+  nome varchar (100),
+  path varchar (100),
+  descricao varchar(300)
+)

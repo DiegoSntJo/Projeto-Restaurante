@@ -171,15 +171,58 @@ if(isset($_FILES['arquivoCombos'])){
 <body>
 
     <header>
-        <input type="button" value="Cadastrar usuário" onclick="cadastrar()">
-        <input type="button" value="Sair" onclick="sair()"><br><br>
+        <!--MENU MOBILE-->
+        <ul class="sidenav" id="menu-mobile">
+            <li><a class="sidenav-close " href="#home">Home</a></li>
+            <li><a class="sidenav-close modal-trigger" href="#adicionarPrato-modal">Adicionar Prato</a></li>
+            <li><a class="sidenav-close modal-trigger" href="#adicionarBebida-modal">Adicionar Bebida</a></li>
+            <li><a class="sidenav-close modal-trigger" href="#adicionarCombo-modal">Adicionar Combo</a></li>
+            <li><a class="sidenav-close" href="cadastro.php">Cadastrar Usuario</a></li>
+            <li><input type="button" value="Sair" onclick=sair()></li>
+        </ul>
+
+        <div class="navbar-fixed">
+            <nav class="navbar z-depth-0">
+                <div class="nav-wrapper container">
+                    <a href=""><img class="logo_img" src="img/logo.png">
+                    <ul class="right light hide-on-med-and-down">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#adicionarPrato-modal" class="modal-trigger">Adicionar Prato</a></li>
+                        <li><a href="#adicionarBebida-modal" class="modal-trigger">Adicionar Bebida</a></li>
+                        <li><a href="#adicionarCombo-modal" class="modal-trigger">Adicionar Combo</a></li>
+                        <li><a href="#cadastrarUsuario-modal" class="modal-trigger">Cadastrar Usuario</a></li>
+                        <li><input type="button" value="Sair" onclick=sair()></li>
+                    </ul>
+
+                    <a href="#" data-target="menu-mobile" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
+                </div>
+            </nav>
+        </div>
+
     </header>
 
     <section>
+        <!--MODAL CADASTRO DE USUÁRIO-->
+        <div class="modal" id="cadastrarUsuario-modal">
+            <div class="modal-content">
+                <h3>Cadastrar usuário</h3>
+                <form method="POST" action="cadastro.php">
+                    <input type="text" name="usuario" placeholder="Usuário" maxlength="40" autocomplete="off" required><br>
+                    <input type="password" name="senha" placeholder="Senha" maxlength="15" required><br>
+                    <input type="password" name="confSenha" placeholder="Confirmar senha" maxlength="15" required><br>
+                    <input type="submit" value="CADASTRAR">
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn blue-logo modal-action modal-close">Voltar</a>
+            </div>
+        </div>
+
         <!--MODAL ADICIONAR PRATO AO CARDÁPIO-->
         <div class="modal" id="adicionarPrato-modal">
             <div class="modal-content">
-                <h2>Adicionar prato ao cardápio</h2>
+                <h3>Adicionar prato ao cardápio</h3>
                 <form method="POST" enctype="multipart/form-data">
                     <input type="text" name="prato" placeholder="Nome do prato" maxlength="30" autocomplete="off"><br>
                     <input type="text" name="descricao" placeholder="Descrição do prato" autocomplete="off"><br>
@@ -197,7 +240,7 @@ if(isset($_FILES['arquivoCombos'])){
         <!--MODAL EDITAR PRATO-->
         <div class="modal" id="editarPrato-modal">
             <div class="modal-content">
-                <h2>Editar prato do cardápio</h2>
+                <h3>Editar prato do cardápio</h3>
                 <form method="GET" action="Funcoes/alterar.php">
                     <input type="hidden" name="codigo" id="codigo" value="<?=$codigo ?>">
                     <input type="text" name="prato" placeholder="Nome do prato" maxlength="30" autocomplete="off" value="<?=$prato?>"><br>
@@ -215,7 +258,7 @@ if(isset($_FILES['arquivoCombos'])){
         <!--MODAL ADICIONAR BEBIDA AO CARDÁPIO-->
         <div class="modal" id="adicionarBebida-modal">
             <div class="modal-content">
-                <h2>Adicionar bebida ao cardápio</h2>
+                <h3>Adicionar bebida ao cardápio</h3>
                 <form method="POST" enctype="multipart/form-data">
                     <input type="text" name="bebida" placeholder="Nome da bebida" maxlength="30" autocomplete="off"><br>
                     <input type="text" name="descricaoBebida" placeholder="Descrição da bebida" autocomplete="off"><br>
@@ -233,7 +276,7 @@ if(isset($_FILES['arquivoCombos'])){
         <!--MODAL EDITAR BEBIDA-->
         <div class="modal" id="editarBebida-modal">
             <div class="modal-content">
-                <h2>Editar bebida do cardápio</h2>
+                <h3>Editar bebida do cardápio</h3>
                 <form method="GET" action="Funcoes/alterarBebida.php">
                     <input type="hidden" name="codigo_bebida" id="codigoBebida" value="<?=$codigoBebida?>">
                     <input type="text" name="bebida" placeholder="Nome da bebida" maxlength="30" autocomplete="off" value="<?=$bebida?>"><br>
@@ -251,7 +294,7 @@ if(isset($_FILES['arquivoCombos'])){
         <!--MODAL ADICIONAR COMBO AO CARDÁPIO-->
         <div class="modal" id="adicionarCombo-modal">
             <div class="modal-content">
-                <h2>Adicionar combo ao cardápio</h2>
+                <h3>Adicionar combo ao cardápio</h3>
                 <form method="POST" enctype="multipart/form-data">
                     <input type="text" name="combo" placeholder="Nome da combo" maxlength="30" autocomplete="off"><br>
                     <input type="text" name="descricaoCombo" placeholder="Descrição da combo" autocomplete="off"><br>
@@ -269,7 +312,7 @@ if(isset($_FILES['arquivoCombos'])){
         <!--MODAL EDITAR COMBO-->
         <div class="modal" id="editarCombo-modal">
             <div class="modal-content">
-                <h2>Editar combo do cardápio</h2>
+                <h3>Editar combo do cardápio</h3>
                 <form method="GET" action="Funcoes/alterarCombo.php">
                     <input type="hidden" name="codigo_combo" id="codigoCombo" value="<?=$codigoCombo?>">
                     <input type="text" name="combo" placeholder="Nome do combo" maxlength="30" autocomplete="off" value="<?=$combo?>"><br>
@@ -389,6 +432,8 @@ if(isset($_FILES['arquivoCombos'])){
     <!-- JAVASCRIPT -->
     <script>
         $(document).ready(function(){
+            // MENU MOBILE
+            $('.sidenav').sidenav();
             // MODAL
             $(".modal").modal();
             // MODAL AUTOMATICO

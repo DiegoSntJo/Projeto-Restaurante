@@ -5,10 +5,6 @@ function sair(){
     }
 }
 
-function cadastrar(){
-        window.location = "cadastro.php";
-}
-
 function excluir(codigo){
      res = confirm("Tem certeza que deseja excluir este prato ?");
     if(res){

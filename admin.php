@@ -32,6 +32,18 @@ if (!empty($_GET["codigo"])){
     $descricao = "";
 }
 
+if (empty($_GET["codigo_usuario"])){
+    $res = mysqli_query($db_conec_users, "SELECT * FROM usuarios");
+    $linha = mysqli_fetch_row($res);
+    $codigoUsuario = $linha[0];
+    $usuario = $linha[1];
+    $antigaSenha = $linha[2];
+}else{
+    $codigoUsuario = "";
+    $usuario = "";
+    $antigaSenha = "";
+}
+
 if (!empty($_GET["codigo_bebida"])){
     $res = mysqli_query($db_conec, "SELECT * FROM bebidas WHERE codigo= " . $_GET["codigo_bebida"]);
     $linha = mysqli_fetch_row($res);
@@ -224,6 +236,25 @@ if(isset($_FILES['arquivoCombos'])){
             </div>
         </div>
 
+        <!--MODAL MUDAR SENHA-->
+        <div class="modal" id="mudarSenha-modal">
+            <div class="modal-content">
+                <h3>Mudar senha</h3>
+                <form method="POST" action="Funcoes/alterarSenha.php">
+                    <input type="hidden" name="codigo_usuario" id="codigo_usuario" value="<?=$codigoUsuario ?>">
+                    <input type="hidden" name="antigaSenha" id="antigaSenha" value="<?=$antigaSenha ?>">
+                    <p>Usuário: <?=$usuario ?></p><br>
+                    <input type="password" name="novaSenha" placeholder="Nova senha" maxlength="15"><br>
+                    <input type="password" name="confSenha" placeholder="Confirmar senha" maxlength="15"><br>
+                    <input type="submit" value="MUDAR">
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn blue-logo modal-action modal-close">Voltar</a>
+            </div>
+        </div>
+
         <!--MODAL REMOVER USUÁRIO-->
         <div class="modal" id="removerUsuario-modal">
             <div class="modal-content">
@@ -249,17 +280,6 @@ if(isset($_FILES['arquivoCombos'])){
                         ?>
                     </tbody>
                 </table>
-            </div>
-
-            <div class="modal-footer">
-                <a class="btn blue-logo modal-action modal-close">Voltar</a>
-            </div>
-        </div>
-
-        <!--MODAL MUDAR SENHA-->
-        <div class="modal" id="mudarSenha-modal">
-            <div class="modal-content">
-
             </div>
 
             <div class="modal-footer">

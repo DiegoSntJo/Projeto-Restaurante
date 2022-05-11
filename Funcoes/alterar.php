@@ -25,12 +25,10 @@
     if(!empty($_GET["codigo"])){
         $query="UPDATE cardapio SET prato='".$prato."',descricao='".$descricao."',preco='".$preco."' WHERE codigo=".$codigo;
         $msg = "Falha ao alterar os dados.";
-?>
-    <script>
-        msg= "Prato editado com sucesso !";
-        onload=alerta();
-    </script>
-<?php
+          ?><script>
+                msg= "Prato editado com sucesso !";
+                onload=alerta();
+            </script><?php
     }else{
         die ("Falha !");
     }

@@ -12,6 +12,13 @@ function excluir(codigo){
     }
 }
 
+function excluirUsuario(codigo){
+    res = confirm("Tem certeza que deseja excluir este usuario ?");
+    if(res){
+        window.location = "Funcoes/excluirUsuario.php?codigo=" + codigo;
+    }
+}
+
 function excluirBebida(codigo){
      res = confirm("Tem certeza que deseja excluir esta bebida ?");
     if(res){

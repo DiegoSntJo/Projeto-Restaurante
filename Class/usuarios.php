@@ -1,5 +1,19 @@
 <?php
 
+$host="localhost";
+$usuario="root";
+$senha="";
+$bd="cj_usuarios";
+
+$db_conec_users= mysqli_connect($host,$usuario,$senha,$bd);
+$mysqli_users=new mysqli($host,$usuario,$senha,$bd);
+
+
+if ($mysqli_users->connect_errno){
+    echo "Falha na conexão: ".$mysqli->connect_errno;
+    exit();
+}
+
 Class Usuario
 {
 	private $pdo;
@@ -37,7 +51,6 @@ Class Usuario
 			return true; //tudo ok
 		}
 	}
-
 
 	public function logar($usuario, $senha)
 	{

@@ -13,8 +13,14 @@ $sql_query_combos = $mysqli->query("SELECT * FROM combos") or die ($mysqli->erro
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coco Jambo Restaurante</title>
-    <!-- MATERIALIZE CSS 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">-->
+    <!-- MATERIALIZE CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="CSS/style.css">
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- GOOGLE FONTS -->
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
 </head>
 
 <body>
@@ -33,8 +39,8 @@ $sql_query_combos = $mysqli->query("SELECT * FROM combos") or die ($mysqli->erro
         <div class="navbar-fixed">
             <nav class="navbar z-depth-0">
                 <div class="nav-wrapper container">
-                    <h1 class="logo_text">Coco Jambo Restaurante - Sabores tropicais !</h1>
-                    <a href=""><img class="logo_img" src="img/logo.png">
+                    <!-- texto logo <h5 class="logo_text">Coco Jambo Restaurante - Sabores tropicais !</h5> -->
+                    <!-- logo <a href=""><img class="logo_img" src="img/logo.png"> -->
             
                     <ul class="right light hide-on-med-and-down">
                         <li><a href="#home">Home</a></li>
@@ -50,8 +56,8 @@ $sql_query_combos = $mysqli->query("SELECT * FROM combos") or die ($mysqli->erro
         </div>
     </header>
 
-    <!-- CARDÁPIO -->
-    <h2>Confira nosso cardápio !</h2>
+    <!-- CARDÁPIO
+    <h2>Confira nosso cardápio !</h2> -->
 
     <!-- PRATOS -->
     <section id="pratos">
@@ -91,7 +97,7 @@ $sql_query_combos = $mysqli->query("SELECT * FROM combos") or die ($mysqli->erro
             <table border="1" cellpadding="10">
                 <thead>
                     <th>Preview</th>
-                    <th>Bebidas</th>
+                    <th>Bebida</th>
                     <th>Descrição</th>
                     <th>Preço</th>
                 </thead>
@@ -122,7 +128,7 @@ $sql_query_combos = $mysqli->query("SELECT * FROM combos") or die ($mysqli->erro
             <table border="1" cellpadding="10">
                 <thead>
                     <th>Preview</th>
-                    <th>Combos</th>
+                    <th>Combo</th>
                     <th>Descrição</th>
                     <th>Preço</th>
                 </thead>
@@ -145,5 +151,38 @@ $sql_query_combos = $mysqli->query("SELECT * FROM combos") or die ($mysqli->erro
             </table>
         </div>
     </section>
+
+    <!--GOOGLE ICONS-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- JQUERY --> 
+    <script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <!-- MATERIALIZE JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- JAVASCRIPT -->
+    <script>
+        //DROPDOWN
+        const elemsDropdown = document.querySelectorAll(".dropdown-trigger");
+        const instancesDropdown = M.Dropdown.init(elemsDropdown, {
+            coverTrigger: false
+        });
+
+        $(document).ready(function(){
+            // MENU MOBILE
+            $('.sidenav').sidenav();
+            // MODAL
+            $(".modal").modal();
+            // MODAL AUTOMATICO
+            slot = document.getElementById("codigo").value;
+            slot1 = document.getElementById("codigoBebida").value;
+            slot2 = document.getElementById("codigoCombo").value;
+            if(slot != ""){
+                $('#editarPrato-modal').modal('open');
+            }else if(slot1 != ""){
+                $('#editarBebida-modal').modal('open'); 
+            }else if(slot2 != ""){
+                $('#editarCombo-modal').modal('open'); 
+            }
+        });
+    </script>
 </body>
 </html>

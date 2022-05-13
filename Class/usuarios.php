@@ -77,8 +77,4 @@ Class Usuario
 
 
 
-
-
-
-
 ?>

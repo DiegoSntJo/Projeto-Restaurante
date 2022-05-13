@@ -81,6 +81,7 @@ if (!empty($_GET["codigo_combo"])){
     $descricaoCombo = "";
 }
 
+
 ?>
 
 <!DOCTYPE html>
@@ -89,7 +90,7 @@ if (!empty($_GET["codigo_combo"])){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administração - Coco Jambo Restaurante</title>
+    <title>Funcionário - Coco Jambo Restaurante</title>
     <script  src="Funcoes/script.js"></script>
     <!-- MATERIALIZE CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -105,12 +106,10 @@ if (!empty($_GET["codigo_combo"])){
     <header>
         <!--MENU MOBILE-->
         <ul class="sidenav" id="menu-mobile">
-            <li><a class="sidenav-close" href="#home">Home</a></li>
+            <li><a class="sidenav-close " href="#home">Home</a></li>
             <li><a class="sidenav-close modal-trigger" href="#adicionarPrato-modal">Adicionar Prato</a></li>
             <li><a class="sidenav-close modal-trigger" href="#adicionarBebida-modal">Adicionar Bebida</a></li>
             <li><a class="sidenav-close modal-trigger" href="#adicionarCombo-modal">Adicionar Combo</a></li>
-            <li><a class="sidenav-close modal-trigger"href="#cadastrarUsuario-modal">Cadastrar usuário</a></li>
-            <li><a class="sidenav-close modal-trigger"href="#removerUsuario-modal">Remover usuário</a></li>
             <li><a class="sidenav-close modal-trigger"href="#mudarSenha-modal">Mudar Senha</a></li>
             <li><input type="button" value="Sair" onclick=sair()></li>
         </ul>
@@ -122,8 +121,8 @@ if (!empty($_GET["codigo_combo"])){
                     <a href=""><img class="logo_img" src="img/logo.png">
                     <ul class="right light hide-on-med-and-down">
                         <li><a href="#home">Home</a></li>
-                        <li><a class="dropdown-trigger" data-target="dropdown-adicionar">Adicionar</a></li>
-                        <li><a class="dropdown-trigger" data-target="dropdown-gerenciar">Gerenciar</a></li>
+                        <li><a class="dropdown-trigger" data-target="dropdown-adicionar" href="">Adicionar</a></li>
+                        <li><a class="dropdown-trigger" data-target="dropdown-gerenciar" href="">Gerenciar</a></li>
                         <li><input type="button" value="Sair" onclick=sair()></li>
                     </ul>
 
@@ -140,8 +139,6 @@ if (!empty($_GET["codigo_combo"])){
         </ul>
 
         <ul id="dropdown-gerenciar" class="dropdown-content">
-            <li><a href="#cadastrarUsuario-modal" class="modal-trigger">Cadastrar</a></li>
-            <li><a href="#removerUsuario-modal" class="modal-trigger">Remover</a></li>
             <li><a href="#mudarSenha-modal" class="modal-trigger">Mudar Senha</a></li>
         </ul>
 
@@ -149,23 +146,6 @@ if (!empty($_GET["codigo_combo"])){
 
     <!-- MODALS -->
     <section>
-        <!--MODAL CADASTRO DE USUÁRIO-->
-        <div class="modal" id="cadastrarUsuario-modal">
-            <div class="modal-content">
-                <h3>Cadastrar usuário</h3>
-                <form method="POST" action="cadastro.php">
-                    <input type="text" name="usuario" placeholder="Usuário" maxlength="40" autocomplete="off" required><br>
-                    <input type="password" name="senha" placeholder="Senha" maxlength="15" required><br>
-                    <input type="password" name="confSenha" placeholder="Confirmar senha" maxlength="15" required><br>
-                    <input type="submit" value="CADASTRAR">
-                </form>
-            </div>
-
-            <div class="modal-footer">
-                <a class="btn blue-logo modal-action modal-close">Voltar</a>
-            </div>
-        </div>
-
         <!--MODAL MUDAR SENHA-->
         <div class="modal" id="mudarSenha-modal">
             <div class="modal-content">
@@ -178,38 +158,6 @@ if (!empty($_GET["codigo_combo"])){
                     <input type="password" name="confSenha" placeholder="Confirmar senha" maxlength="15"><br>
                     <input type="submit" value="MUDAR">
                 </form>
-            </div>
-
-            <div class="modal-footer">
-                <a class="btn blue-logo modal-action modal-close">Voltar</a>
-            </div>
-        </div>
-
-        <!--MODAL REMOVER USUÁRIO-->
-        <div class="modal" id="removerUsuario-modal">
-            <div class="modal-content">
-                <h3>Remover usuário</h3>
-                <table border="1" cellpadding="10">
-                    <thead>
-                        <th>ID</th>
-                        <th>Usuário</th>
-                        <th>Excluir</th>
-                    </thead>
-                        
-                    <tbody>
-                        <?php
-                            while($arquivo = $sql_query_usuarios->fetch_assoc()){
-                        ?>
-                        <tr>
-                            <td><?php echo $arquivo['id_usuario']; ?></td>
-                            <td><?php echo $arquivo['usuario']; ?></td>
-                            <td><input type="button" value="Excluir" onclick="excluirUsuario(<?php echo $arquivo['id_usuario']; ?>)"></td>
-                        </tr>
-                        <?php
-                        }
-                        ?>
-                    </tbody>
-                </table>
             </div>
 
             <div class="modal-footer">
@@ -327,7 +275,7 @@ if (!empty($_GET["codigo_combo"])){
     </section>
 
     <!-- CARDÁPIO -->
-    <h2>Cardápio</h2>   
+    <h2>Cardápio</h2>
     <section>
             <!-- PRATOS -->
             <div>
@@ -423,7 +371,7 @@ if (!empty($_GET["codigo_combo"])){
                         ?>
                     </tbody>
                 </table>
-            </div>   
+            </div>
     </section>
 
     <!--GOOGLE ICONS-->

@@ -27,7 +27,7 @@
             </form>
         </div>
     
-        <!-- CONEXÃO COM DB  
+        <!-- CONEXÃO COM DB --> 
         <?php
         if(isset($_POST['usuario'])){
           $usuario = addslashes($_POST['usuario']);
@@ -37,7 +37,11 @@
             $u->conectar("cj_usuarios","localhost","root","");
             if($u->msgErro == ""){
               if($u->logar($usuario,$senha)){
-                header("location: admin.php");
+                if($usuario == "Adm"){
+                  header("location: admin.php");
+                }else{
+                  header("location: funcionario.php");
+                }
               }
               else{
                 ?>
@@ -58,7 +62,6 @@
           }
         }
       ?>
-    -->
 
     </section>
 </body>
